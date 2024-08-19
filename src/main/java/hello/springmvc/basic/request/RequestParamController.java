@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -82,6 +83,29 @@ public class RequestParamController {
   public String requestParamMap(
       @RequestParam Map<String, Object> paramMap) {
     log.info("username={}, age={}", paramMap.get("username"), paramMap.get("age"));
+    return "ok";
+  }
+
+  @ResponseBody
+  @RequestMapping("/model-attribute-v1")
+  public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+    /**
+     * @ModelAttribute 동작
+     * HelloData 객체 생성
+     * 요청 파라미터 이름으로 HelloData 객체의 프로퍼티를 찾음.(set~ get~)
+     * setter를 호출해서 파라미터의 값을 바인딩.
+     */
+
+    log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+    log.info("helloData={}", helloData); // @Data에 @ToString이 있어서 이렇게 가능.
+    return "ok";
+  }
+
+  @ResponseBody
+  @RequestMapping("/model-attribute-v2")
+  public String modelAttributeV2(HelloData helloData) {
+    log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+    log.info("helloData={}", helloData); // @Data에 @ToString이 있어서 이렇게 가능.
     return "ok";
   }
 }
